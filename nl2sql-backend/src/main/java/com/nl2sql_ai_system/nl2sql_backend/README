@@ -1,0 +1,134 @@
+nl2sql_backend
+│
+├── common/                         # 🔹 shared nhỏ, KHÔNG business
+│   ├── context/
+│   │   └── ChatContextHolder.java
+│   └── util/
+│
+├── chat/                           # 🔹 entry point (application layer nhẹ)
+│   ├── controller/
+│   │   └── QueryController.java
+│   │
+│   └── service/
+│       ├── ChatService.java
+│       └── ChatServiceImpl.java
+│
+├── ai/                             # 🔹 AI module (LLM + decision)
+│   ├── AiClient.java
+│   ├── AiClientImpl.java
+│   │
+│   ├── classifier/
+│   │   └── SimpleIntentClassifier.java
+│   │
+│   ├── handler/
+│   │   └── GeneralChatHandler.java
+│   │
+│   └── tool/
+│       └── DbQueryTool.java
+│
+├── orchestrator/                   # 🔥 CORE coordinator
+│   ├── Nl2SqlOrchestrator.java
+│   ├── Nl2SqlOrchestratorImpl.java
+│   │
+│   └── port/                      # 🔥 interface nằm đây (consumer owns)
+│       ├── SchemaSelector.java
+│       ├── QueryExecutor.java
+│       └── DataSourceResolver.java
+│
+├── metadata/                       # 🔹 self-contained
+│   ├── entity/
+│   │   ├── TableMetadataEntity.java
+│   │   ├── ColumnMetadataEntity.java
+│   │   └── TableRelationshipEntity.java
+│   │
+│   ├── repository/
+│   │   ├── TableMetadataRepository.java
+│   │   └── ColumnMetadataRepository.java
+│   │
+│   └── service/
+│       └── SchemaSelectorImpl.java   # implements orchestrator.port
+│
+├── datasource/                     # 🔹 self-contained
+│   ├── entity/
+│   │   └── DataSourceEntity.java
+│   │
+│   ├── repository/
+│   │   └── DataSourceRepository.java
+│   │
+│   └── service/
+│       └── DataSourceResolverImpl.java
+│
+├── executor/                       # 🔹 self-contained
+│   ├── service/
+│   │   └── QueryExecutorImpl.java   # implements orchestrator.port
+│
+├── logging/                        # 🔹 query_logs module
+│   ├── entity/
+│   │   └── QueryLogEntity.java
+│   │
+│   ├── repository/
+│   │   └── QueryLogRepository.java
+│   │
+│   └── service/
+│       └── QueryLogService.java
+│
+└── config/
+    └── AppConfig.java
+
+
+✅ Bước 1: Define FLOW (quan trọng nhất)
+
+Bạn phải chốt rõ:
+
+User → ChatService → AiClient
+   → (normal) trả lời
+   → (data) gọi tool → Orchestrator
+                         ↓
+                  Schema → SQL → Execute
+
+👉 Nếu chưa rõ flow → code kiểu gì cũng sai
+
+✅ Bước 2: Define INTERFACE (port)
+
+Tạo trước:
+
+orchestrator/port/
+SchemaSelector
+QueryExecutor
+DataSourceResolver
+
+👉 Đây là “xương sống” của hệ thống
+
+✅ Bước 3: Code ORCHESTRATOR
+process(intent, role)
+
+👉 Vì nó là:
+
+🔥 nơi quyết định pipeline chạy như nào
+
+✅ Bước 4: Code AI (nhánh logic)
+AiClientImpl
+ ├─ classifier
+ ├─ normal handler
+ └─ tool
+
+👉 Lúc này bạn đã chạy được flow:
+
+query thường → trả lời
+query data → đi vào orchestrator
+✅ Bước 5: Stub implementation (fake trước)
+SchemaSelector → return mock schema
+QueryExecutor → return mock data
+
+👉 test end-to-end trước
+
+❗ Bước 6: LÚC NÀY mới tạo ENTITY
+metadata/entity
+datasource/entity
+logging/entity
+
+👉 vì lúc này bạn đã biết:
+
+cần field gì
+query như nào
+performance ra sao
