@@ -1,0 +1,9 @@
+target/
+nlsql-backend/
+nlsql-frontend/
+*.log
+.git
+.gitignore
+venv/
+__pycache__/
+*.md
