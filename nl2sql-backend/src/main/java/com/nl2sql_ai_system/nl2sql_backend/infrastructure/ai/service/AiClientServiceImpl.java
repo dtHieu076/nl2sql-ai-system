@@ -1,9 +1,10 @@
 package com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.service;
 
 import lombok.RequiredArgsConstructor;
-import java.util.Map;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
+
+import com.nl2sql_ai_system.nl2sql_backend.chat.strategy.enumQueryIntent;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.AiClientService;
 
 @Service
@@ -59,5 +60,41 @@ public class AiClientServiceImpl implements AiClientService {
                 .call()
                 .content()
                 .trim();
+    }
+
+    @Override
+    public enumQueryIntent classifyIntent(String userQuery) {
+        String prompt = """
+                Phân loại câu hỏi sau thành 1 trong 3 loại:
+                1. GENERAL: Câu hỏi chào hỏi, định nghĩa, không cần số liệu thực tế. (VD: "Doanh thu là gì", "Xin chào")
+                2. DB_TEXT: Cần lấy số liệu nhưng chỉ là câu hỏi tra cứu đơn giản, một con số. (VD: "Tổng doanh thu tháng 1 là bao nhiêu")
+                3. DB_REPORT: Cần lấy số liệu và có tính chất so sánh, phân tích, thống kê, xem xu hướng, tỷ lệ, cần vẽ biểu đồ. (VD: "So sánh doanh thu các tháng")
+
+                CHỈ TRẢ VỀ TÊN LOẠI: GENERAL, DB_TEXT, hoặc DB_REPORT. Không giải thích gì thêm.
+                Câu hỏi: "%s"
+                """;
+
+        String classification = chatClient.prompt()
+                .user(String.format(prompt, userQuery))
+                .call()
+                .content()
+                .trim()
+                .toUpperCase();
+
+        try {
+            return enumQueryIntent.valueOf(classification);
+        } catch (IllegalArgumentException e) {
+            return enumQueryIntent.GENERAL; // Mặc định an toàn
+        }
+    }
+
+    @Override
+    public String chatWithDbTool(String userQuery) {
+        // Gom logic gọi Tool xuống Hạ tầng
+        return chatClient.prompt()
+                .user(userQuery)
+                .functions("executeDbQueryTool")
+                .call()
+                .content();
     }
 }
