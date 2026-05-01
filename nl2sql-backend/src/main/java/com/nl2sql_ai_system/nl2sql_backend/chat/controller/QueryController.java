@@ -1,42 +1,29 @@
 package com.nl2sql_ai_system.nl2sql_backend.chat.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.bind.annotation.*;
-
-import com.nl2sql_ai_system.nl2sql_backend.chat.service.ChatService;
+import com.nl2sql_ai_system.nl2sql_backend.chat.service.QueryService;
 
 @RestController
 @RequestMapping("/api/chat")
 @RequiredArgsConstructor
 public class QueryController {
 
-    private final ChatService chatService;
+    private final QueryService queryService;
 
     @PostMapping
     public String chat(@RequestBody ChatRequest request) {
-        return chatService.handleChat(
+        return queryService.handleChat(
                 request.getUserQuery(),
                 request.getRole());
     }
 
+    @Getter
+    @Setter
     public static class ChatRequest {
         private String userQuery;
         private String role;
-
-        public String getUserQuery() {
-            return userQuery;
-        }
-
-        public void setUserQuery(String userQuery) {
-            this.userQuery = userQuery;
-        }
-
-        public String getRole() {
-            return role;
-        }
-
-        public void setRole(String role) {
-            this.role = role;
-        }
     }
 }

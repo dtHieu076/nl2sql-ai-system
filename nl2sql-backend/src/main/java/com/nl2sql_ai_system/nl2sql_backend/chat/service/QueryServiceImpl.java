@@ -1,15 +1,15 @@
 package com.nl2sql_ai_system.nl2sql_backend.chat.service;
 
 import com.nl2sql_ai_system.nl2sql_backend.common.context.ChatContextHolder;
-import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.AiClient;
+import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.AiClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ChatServiceImpl implements ChatService {
+public class QueryServiceImpl implements QueryService {
 
-    private final AiClient aiClient;
+    private final AiClientService aiClient;
 
     @Override
     public String handleChat(String userQuery, String role) {
