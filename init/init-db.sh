@@ -20,6 +20,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "nl2sql_admin_db" <
        username VARCHAR(100),
        password VARCHAR(255),
        status VARCHAR(20),
+       assigned_role VARCHAR(20),
        last_sync_at TIMESTAMP,
        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
@@ -90,4 +91,9 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "nl2sql_admin_db" <
     );
 EOSQL
 
-echo "Database initialization completed successfully!"
+echo "Importing HR backup into hr_db..."
+# Bỏ ON_ERROR_STOP=1 để nó không bị sập bởi lỗi transaction_timeout của Neon
+psql --username "$POSTGRES_USER" --dbname "hr_db" -f /db-scripts/hr_backup.sql
+
+echo "Importing Seed Data into nl2sql_admin_db..."
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "nl2sql_admin_db" -f /db-scripts/seed-data.sql

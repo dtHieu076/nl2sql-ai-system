@@ -1,10 +1,10 @@
 package com.nl2sql_ai_system.nl2sql_backend.chat.service.Impl;
 
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.ChatResult;
 import com.nl2sql_ai_system.nl2sql_backend.chat.service.QueryService;
-import com.nl2sql_ai_system.nl2sql_backend.chat.strategy.ChatStrategy;
-import com.nl2sql_ai_system.nl2sql_backend.chat.strategy.enumQueryIntent;
 import com.nl2sql_ai_system.nl2sql_backend.common.context.ChatContextHolder;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.ChatResult;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.enumQueryIntent;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.strategy.ChatStrategy;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.AiClientService;
 import org.springframework.stereotype.Service;
 

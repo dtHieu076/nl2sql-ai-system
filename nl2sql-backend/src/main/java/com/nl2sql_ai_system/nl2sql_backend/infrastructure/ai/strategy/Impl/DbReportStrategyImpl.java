@@ -1,10 +1,11 @@
-package com.nl2sql_ai_system.nl2sql_backend.chat.strategy.Impl;
+package com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.strategy.Impl;
 
 import org.springframework.stereotype.Component;
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.AiAnalysisResponse;
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.ChatResult;
-import com.nl2sql_ai_system.nl2sql_backend.chat.strategy.ChatStrategy;
-import com.nl2sql_ai_system.nl2sql_backend.chat.strategy.enumQueryIntent;
+
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.AiAnalysisResponse;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.ChatResult;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.enumQueryIntent;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.strategy.ChatStrategy;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.AiClientService;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.DataAnalyzerService;
 import lombok.RequiredArgsConstructor;

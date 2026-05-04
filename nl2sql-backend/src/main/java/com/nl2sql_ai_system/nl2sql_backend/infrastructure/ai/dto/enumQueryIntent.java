@@ -1,4 +1,4 @@
-package com.nl2sql_ai_system.nl2sql_backend.chat.strategy;
+package com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto;
 
 public enum enumQueryIntent {
     GENERAL, // Câu hỏi thường, khái niệm, giao tiếp

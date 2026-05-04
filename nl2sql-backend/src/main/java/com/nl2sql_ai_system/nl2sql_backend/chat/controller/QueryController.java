@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.*;
 
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.ChatResult;
 import com.nl2sql_ai_system.nl2sql_backend.chat.service.QueryService;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.ChatResult;
 
 @RestController
 @RequestMapping("/api/chat")

@@ -1,6 +1,6 @@
 package com.nl2sql_ai_system.nl2sql_backend.orchestrator;
 
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.AiAnalysisResponse;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.AiAnalysisResponse;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.AiClientService;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.DataSourceService;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.ExecutorService;
@@ -29,6 +29,7 @@ public class Nl2SqlOrchestratorImpl implements Nl2SqlOrchestrator {
 
         // 3. Generate SQL
         String sql = aiClient.generateSql(intent, schema);
+        System.out.println("Generated SQL: " + sql); // Debug log
 
         // 4. Execute lấy dữ liệu thô (JSON String)
         String rawJsonData = executorService.execute(sql, dataSourceId);

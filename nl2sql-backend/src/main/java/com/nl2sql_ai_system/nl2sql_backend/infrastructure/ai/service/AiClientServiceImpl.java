@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
-import com.nl2sql_ai_system.nl2sql_backend.chat.strategy.enumQueryIntent;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.enumQueryIntent;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.AiClientService;
 
 @Service
@@ -14,23 +14,28 @@ public class AiClientServiceImpl implements AiClientService {
     private final ChatClient chatClient;
 
     @Override
-    public String chat(String userQuery) {
+    public String generateSimpleResponse(String userQuery) {
+        return chatClient.prompt()
+                .system("""
+                        Bạn là trợ lý AI thông minh.
+                        Hãy trả lời câu hỏi của người dùng một cách ngắn gọn, lịch sự.
+                        Lưu ý: Bạn không có quyền truy cập trực tiếp vào cơ sở dữ liệu trong chế độ này.
+                        """)
+                .user(userQuery)
+                .call()
+                .content();
+    }
 
+    @Override
+    public String chatWithDbTool(String userQuery) {
         return chatClient.prompt()
                 .system("""
                         Bạn là AI trợ lý cho hệ thống NL2SQL.
 
                         QUY TẮC:
-                        - Nếu câu hỏi KHÔNG cần dữ liệu → trả lời trực tiếp
-                        - Nếu câu hỏi CẦN dữ liệu từ database → BẮT BUỘC gọi tool executeDbQueryTool
-                        - KHÔNG tự bịa dữ liệu
-                        - KHÔNG tự tạo SQL nếu chưa có schema
-
-                        Ví dụ:
-                        - "doanh thu tháng này" → gọi tool
-                        - "tổng lương nhân viên" → gọi tool
-                        - "doanh thu là gì" → trả lời thường
-                        - "giải thích SQL" → trả lời thường
+                        - Nếu câu hỏi cần dữ liệu thực tế từ hệ thống -> BẮT BUỘC gọi tool 'executeDbQueryTool'.
+                        - Sau khi tool trả về dữ liệu, hãy tổng hợp và trả lời người dùng một cách tự nhiên.
+                        - KHÔNG tự bịa ra số liệu nếu tool không trả về kết quả.
                         """)
                 .user(userQuery)
                 .functions("executeDbQueryTool")
@@ -86,15 +91,5 @@ public class AiClientServiceImpl implements AiClientService {
         } catch (IllegalArgumentException e) {
             return enumQueryIntent.GENERAL; // Mặc định an toàn
         }
-    }
-
-    @Override
-    public String chatWithDbTool(String userQuery) {
-        // Gom logic gọi Tool xuống Hạ tầng
-        return chatClient.prompt()
-                .user(userQuery)
-                .functions("executeDbQueryTool")
-                .call()
-                .content();
     }
 }

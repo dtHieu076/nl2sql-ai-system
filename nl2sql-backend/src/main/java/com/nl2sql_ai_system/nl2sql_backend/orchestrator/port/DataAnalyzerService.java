@@ -1,6 +1,6 @@
 package com.nl2sql_ai_system.nl2sql_backend.orchestrator.port;
 
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.AiAnalysisResponse;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.AiAnalysisResponse;
 
 public interface DataAnalyzerService {
     /**

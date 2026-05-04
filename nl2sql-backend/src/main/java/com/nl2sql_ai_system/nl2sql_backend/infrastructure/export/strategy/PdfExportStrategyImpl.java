@@ -1,7 +1,8 @@
 package com.nl2sql_ai_system.nl2sql_backend.infrastructure.export.strategy;
 
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.AiAnalysisResponse;
 import org.springframework.stereotype.Component;
+
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.AiAnalysisResponse;
 
 @Component
 public class PdfExportStrategyImpl implements FileExportStrategy {

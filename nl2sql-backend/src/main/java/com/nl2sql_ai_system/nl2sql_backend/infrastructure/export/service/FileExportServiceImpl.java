@@ -1,7 +1,7 @@
 package com.nl2sql_ai_system.nl2sql_backend.infrastructure.export.service;
 
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.AiAnalysisResponse;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.FileExportService;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.AiAnalysisResponse;
 import com.nl2sql_ai_system.nl2sql_backend.infrastructure.export.factory.ExportStrategyFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

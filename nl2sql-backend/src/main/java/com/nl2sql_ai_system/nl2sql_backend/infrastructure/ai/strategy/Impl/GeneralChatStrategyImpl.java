@@ -1,9 +1,10 @@
-package com.nl2sql_ai_system.nl2sql_backend.chat.strategy.Impl;
+package com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.strategy.Impl;
 
 import org.springframework.stereotype.Component;
-import com.nl2sql_ai_system.nl2sql_backend.chat.dto.ChatResult;
-import com.nl2sql_ai_system.nl2sql_backend.chat.strategy.ChatStrategy;
-import com.nl2sql_ai_system.nl2sql_backend.chat.strategy.enumQueryIntent;
+
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.ChatResult;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto.enumQueryIntent;
+import com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.strategy.ChatStrategy;
 import com.nl2sql_ai_system.nl2sql_backend.orchestrator.port.AiClientService;
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +21,7 @@ public class GeneralChatStrategyImpl implements ChatStrategy {
 
     @Override
     public ChatResult process(String userQuery) {
-        String response = aiClientService.chat(userQuery); // Gọi qua Port
+        String response = aiClientService.generateSimpleResponse(userQuery); // Gọi qua Port
         return ChatResult.builder()
                 .type(enumQueryIntent.GENERAL.name())
                 .message(response)

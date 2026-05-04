@@ -1,4 +1,4 @@
-package com.nl2sql_ai_system.nl2sql_backend.chat.dto;
+package com.nl2sql_ai_system.nl2sql_backend.infrastructure.ai.dto;
 
 import lombok.Builder;
 import lombok.Data;

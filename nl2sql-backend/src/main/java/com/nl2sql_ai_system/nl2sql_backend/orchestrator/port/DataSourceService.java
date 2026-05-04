@@ -12,4 +12,6 @@ public interface DataSourceService {
     List<DataSource> findAll();
 
     DataSource findById(Long id);
+
+    DataSource update(DataSource ds);
 }

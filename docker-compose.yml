@@ -1,6 +1,6 @@
 services:
   database:
-    image: dthieudocker/nl2sql-db:v1
+    image: dthieudocker/nl2sql-db:v4
     container_name: nl2sql_postgres
     environment:
       POSTGRES_USER: admin

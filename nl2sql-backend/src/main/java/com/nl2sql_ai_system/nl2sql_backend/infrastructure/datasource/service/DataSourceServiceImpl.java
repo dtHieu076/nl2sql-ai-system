@@ -42,4 +42,9 @@ public class DataSourceServiceImpl implements DataSourceService {
                 .orElseThrow(() -> new RuntimeException("DataSource not found"));
     }
 
+    @Override
+    public DataSource update(DataSource ds) {
+        return dataSourceRepository.save(ds);
+    }
+
 }
